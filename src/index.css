@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+.font-urbanist{
+  font-family: "Urbanist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@theme{
+  --color-lightG: #CAEB66;
+  --color-deepG: #03373D;
+}
+
+/* sweet alert pop up button style */
+.swal2-styled{
+  background: #CAEB66;
+  color: #03373D;
+  transition: 0.5s ease-in-out;
+}
+
+.swal2-styled:hover{
+  background: #03373D;
+  color: white;
+}
+
+/* style for active class */
+.active{
+  background-color: #CAEB66;
+  color: #03373D;
+}
