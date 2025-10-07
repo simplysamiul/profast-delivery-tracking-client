@@ -8,12 +8,17 @@ import Swal from 'sweetalert2';
 const Navbar = () => {
     const { user, userLogOut, setUserDataLoading } = useAuth();
     const navItems = <>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/">Home</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/services">Services</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/coverage">Coverage</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/about">About Us</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/pricing">Pricing</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300'><NavLink to="/beARider">Be a Rider</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/">Home</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/sendParcel">Send Parcel</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/coverage">Coverage</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/about">About Us</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/pricing">Pricing</NavLink></li>
+        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/beARider">Be a Rider</NavLink></li>
+        {
+            user && <>
+                <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/dashboard">Dashboard</NavLink></li>
+            </>
+        }
     </>
 
     // logout 
@@ -47,10 +52,8 @@ const Navbar = () => {
                         {navItems}
                     </ul>
                 </div>
-                <Link to="/">
-                    {/* Navbar Logo */}
-                    <ProfastLogo />
-                </Link>
+                {/* Navbar Logo */}
+                <ProfastLogo />
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -58,8 +61,8 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end flex items-center space-x-3">
-                {user?.email ?  <button onClick={handleLogOut} className='btn bg-lightG font-bold'>Log Out</button>
-                : <Link to="/login"><button className='btn text-gray-600'>Sign In</button></Link>}
+                {user?.email ? <button onClick={handleLogOut} className='btn bg-lightG font-bold'>Log Out</button>
+                    : <Link to="/login"><button className='btn text-gray-600'>Sign In</button></Link>}
             </div>
         </div>
     );

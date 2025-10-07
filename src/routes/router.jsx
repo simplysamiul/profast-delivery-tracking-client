@@ -7,6 +7,10 @@ import Login from '../pages/Authentication/Login/Login';
 import Register from '../pages/Authentication/Register/Register';
 import ForgetPassword from '../pages/Authentication/ForgetPassword/ForgetPassword';
 import Coverage from '../pages/Coverage/Coverage';
+import SendParcel from '../pages/SendParcel/SendParcel';
+import PrivateRoute from './PrivateRoute';
+import DashboardLayout from '../layout/DashboardLayout';
+import MyParcels from '../pages/Dashboard/MyParcels/MyParcels';
 
 
 const router = createBrowserRouter([
@@ -21,6 +25,10 @@ const router = createBrowserRouter([
             {
                 path: "/coverage",
                 Component: Coverage,
+            },
+            {
+                path: "/sendParcel", 
+                element: <PrivateRoute><SendParcel /></PrivateRoute>
             }
         ]
     },
@@ -39,6 +47,16 @@ const router = createBrowserRouter([
             {
                 path: "/forgetPassword",
                 Component: ForgetPassword
+            }
+        ]
+    },
+    {
+        path: "/dashboard",
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        children: [
+            {
+                path: "myParcels",
+                Component: MyParcels
             }
         ]
     }

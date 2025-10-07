@@ -5,7 +5,7 @@ import Footer from '../pages/Shared/Footer/Footer';
 
 const RootLayout = () => {
     return (
-        <div>
+        <div className = 'font-urbanist max-w-11/12 lg:max-w-10/12 mx-auto'>
             <Navbar />
             <Outlet />
             <Footer />

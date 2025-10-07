@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <div className='font-urbanist max-w-11/12 lg:max-w-10/12 mx-auto'>
+    <div >
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
