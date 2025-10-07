@@ -23,20 +23,29 @@ const Navbar = () => {
 
     // logout 
     const handleLogOut = () => {
-        userLogOut()
-            .then(() => {
-                Swal.fire({
-                    text: "User Logout Successfully ....!",
-                    icon: "success"
-                });
-                setUserDataLoading(false);
-            }).catch(err => {
-                Swal.fire({
-                    text: `${err.message}`,
-                    icon: "error"
-                });
-                setUserDataLoading(false);
-            })
+        Swal.fire({
+            title: "Log Out",
+            text: "Are You sure you want to log out ?",
+            showCloseButton: true,
+            icon: "warning"
+        }).then((res) => {
+            if (res.isConfirmed) {
+                userLogOut()
+                    .then(() => {
+                        Swal.fire({
+                            text: "User Logout Successfully ....!",
+                            icon: "success"
+                        });
+                        setUserDataLoading(false);
+                    }).catch(err => {
+                        Swal.fire({
+                            text: `${err.message}`,
+                            icon: "error"
+                        });
+                        setUserDataLoading(false);
+                    })
+            }
+        });
     }
 
     return (
