@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  CircleDollarSign,
 } from "lucide-react";
 import ProfastLogo from "../pages/Shared/ProfastLogo/ProfastLogo";
 import Swal from "sweetalert2";

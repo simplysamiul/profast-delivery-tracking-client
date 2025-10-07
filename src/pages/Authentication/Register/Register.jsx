@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
@@ -8,6 +8,12 @@ import { PropagateLoader } from 'react-spinners';
 const Register = () => {
     const { createUser, setUserDataLoading } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
+
+    const location = useLocation();
+    const from = location?.state || "/";
+    const navigate = useNavigate();
+
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
         setLoading(true);
@@ -23,6 +29,7 @@ const Register = () => {
                     reset();
                     setLoading(false);
                     setUserDataLoading(false);
+                    navigate(from);
                 }
             }).catch(err => {
                 Swal.fire({

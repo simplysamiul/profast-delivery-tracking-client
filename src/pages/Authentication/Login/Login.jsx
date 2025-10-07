@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import googleIconAnimation from '../../../assets/lottie/Google-Logo.json';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import Swal from 'sweetalert2';
@@ -11,6 +11,12 @@ const Login = () => {
     // use context
     const { signInUser, googleLogIn, setUserDataLoading } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
+    
+    const location = useLocation();
+    const from = location?.state || "/";
+    const navigate = useNavigate();
+
+    // react hook form
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
         setLoading(true);
@@ -26,6 +32,7 @@ const Login = () => {
                     reset();
                     setLoading(false);
                     setUserDataLoading(false);
+                    navigate(from);
                 }
             }).catch(err => {
                 Swal.fire({
@@ -49,6 +56,7 @@ const Login = () => {
                     });
                     reset();
                     setLoading(false);
+                    navigate(from);
                 }
             }).catch(err => {
                 Swal.fire({
