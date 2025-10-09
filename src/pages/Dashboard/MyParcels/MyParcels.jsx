@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { Eye, Edit, Trash2, PackageX, CircleDollarSign } from "lucide-react";
+import { Eye, Edit, Trash2, PackageX, CircleDollarSign, MapPinCheckInside, Hash, Package, Boxes, Scale, Clock, Wallet, CreditCard, Settings, } from "lucide-react";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 
 const MyParcels = () => {
     const { user } = useAuth();
@@ -22,11 +23,11 @@ const MyParcels = () => {
     // Color badge for payment status
     const getPaymentBadge = (status) => {
         switch (status) {
-            case "Paid":
+            case "paid":
                 return <span className="badge bg-green-500 text-white">Paid</span>;
-            case "Pending":
+            case "pending":
                 return <span className="badge bg-yellow-500 text-white">Pending</span>;
-            case "Unpaid":
+            case "unpaid":
             default:
                 return <span className="badge bg-red-500 text-white">Unpaid</span>;
         }
@@ -85,7 +86,7 @@ const MyParcels = () => {
                     <h3 className="text-lg font-semibold text-[#03373D]">
                         No Parcels Found
                     </h3>
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-gray-500 text-lg mt-2">
                         You haven’t booked any parcels yet.
                     </p>
                 </div>
@@ -93,26 +94,75 @@ const MyParcels = () => {
                 /* === Parcels Table === */
                 <div className="w-full overflow-x-auto rounded-xl border border-gray-200 shadow-md bg-white">
                     <table className="table w-full min-w-[700px]">
-                        <thead className="bg-[#03373D] text-[#CAEB66]">
+                        <thead className="bg-[#03373D] text-lightG">
                             <tr>
-                                <th>#</th>
-                                <th>Parcel Name</th>
-                                <th>Type</th>
-                                <th>Booking Time</th>
-                                <th>Delivery Charge</th>
-                                <th>Payment</th>
-                                <th className="text-center">Actions</th>
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Hash size={16} className="text-lightG" />
+                                        #
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Package size={16} className="text-lightG" />
+                                        Parcel Name
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Boxes size={16} className="text-lightG" />
+                                        Type
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Scale size={16} className="text-lightG" />
+                                        Weight
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Clock size={16} className="text-lightG" />
+                                        Booking Time
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <Wallet size={16} className="text-lightG" />
+                                        Delivery Charge
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <CreditCard size={16} className="text-lightG" />
+                                        Payment
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-center">
+                                    <span className="flex items-center justify-center gap-2">
+                                        <Settings size={16} className="text-lightG" />
+                                        Actions
+                                    </span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {parcels.map((parcel, index) => (
                                 <tr
                                     key={parcel._id}
-                                    className="hover:bg-[#CAEB66] transition-colors"
+                                    className="hover:bg-lightG transition-colors"
                                 >
                                     <td>{index + 1}</td>
                                     <td className="font-medium max-w-[180px] truncate">{parcel.parcelName}</td>
                                     <td>{parcel.parcelType}</td>
+                                    <td>{`${parcel.parcelWeight ? parcel.parcelWeight + "-(KG)" : "0"}`}</td>
                                     <td>{parcel.bookingTime}</td>
                                     <td><span className='font-semibold'>BDT -</span> {parcel.deliveryCharge} /-</td>
                                     <td>{getPaymentBadge(parcel.paymentStatus)}</td>
@@ -126,24 +176,38 @@ const MyParcels = () => {
                                         </button>
 
                                         {/* Payment */}
-                                        <button
+                                        {parcel.paymentStatus === "unpaid" && <button
                                             className="btn btn-sm bg-blue-600 hover:bg-blue-800 text-white tooltip" data-tip="Payment"
                                             onClick={() => handlePayment(parcel._id)}
                                         >
                                             <CircleDollarSign size={16} />
-                                        </button>
+                                        </button>}
 
                                         {/* Edit */}
-                                        {parcel.paymentStatus === "Unpaid" && (
-                                            <button className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white tooltip" data-tip="Edit"> 
+                                        {parcel.paymentStatus === "unpaid" && (
+                                            <button className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white tooltip" data-tip="Edit">
                                                 <Edit size={16} />
                                             </button>
                                         )}
 
                                         {/* Delete */}
-                                        {parcel.paymentStatus === "Unpaid" && (
+                                        {parcel.paymentStatus === "unpaid" && (
                                             <button onClick={() => handleParcelDelete(parcel._id)} className="btn btn-sm bg-red-500 hover:bg-red-600 text-white tooltip" data-tip="Delete">
                                                 <Trash2 size={16} />
+                                            </button>
+                                        )}
+
+                                        {/* Track parcdel */}
+                                        {parcel.paymentStatus === "paid" && (
+                                            <button className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white tooltip" data-tip="Track">
+                                                <MapPinCheckInside size={16} />
+                                            </button>
+                                        )}
+
+                                        {/* Invoice */}
+                                        {parcel.paymentStatus === "paid" && (
+                                            <button onClick={() => handleParcelDelete(parcel._id)} className="btn btn-sm bg-red-500 hover:bg-red-600 text-white tooltip" data-tip="Invoice">
+                                                <FaFileInvoiceDollar size={16} />
                                             </button>
                                         )}
                                     </td>
@@ -171,7 +235,9 @@ const MyParcels = () => {
                                 <p><strong>Booking Time:</strong> {selectedParcel.bookingTime}</p>
                                 <p><strong>Delivery Charge:</strong> ${selectedParcel.deliveryCharge}</p>
                                 <p><strong>Status:</strong> {selectedParcel.status}</p>
-                                <p><strong>Payment:</strong> {selectedParcel.paymentStatus}</p>
+                                <p><strong>Payment:</strong> <span
+                                    className={`${selectedParcel.paymentStatus === "paid" ? "bg-green-500" : "bg-red-500"} badge text-white`}>
+                                    {selectedParcel.paymentStatus}</span></p>
                             </div>
                             <div>
                                 <p><strong>Delivery Type:</strong> {selectedParcel.deliveryType}</p>
@@ -216,7 +282,7 @@ const MyParcels = () => {
                         {/* Close Button */}
                         <div className="modal-action mt-6">
                             <button
-                                className="btn bg-[#03373D] text-[#CAEB66] hover:bg-[#04545A]"
+                                className="btn bg-[#03373D] text-lightG hover:bg-[#04545A]"
                                 onClick={() => setSelectedParcel(null)}
                             >Close</button>
                         </div>

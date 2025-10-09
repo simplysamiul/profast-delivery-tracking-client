@@ -10,7 +10,7 @@ const AuthLayout = () => {
             <div className="min-h-screen flex flex-col md:flex-row">
                 {/* Logo */}
                 <div className="mt-4">
-                    <ProfastLogo />
+                   <Link to="/"> <ProfastLogo /></Link>
                 </div>
                 {/* Left Section */}
                 <Outlet />

@@ -104,8 +104,8 @@ const SendParcel = () => {
       trackingId,
       deliveryCharge: charge,
       deliveryType,
-      status: "Pending",
-      paymentStatus: "Unpaid"
+      status: "pending",
+      paymentStatus: "unpaid"
     };
 
     // ✅ SweetAlert to confirm booking

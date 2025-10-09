@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import {
   Menu,
   Package,
@@ -7,7 +7,10 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  CircleDollarSign,
+  House,
+  DollarSign,
+  MapPinCheckInside,
+  UserRoundPen
 } from "lucide-react";
 import ProfastLogo from "../pages/Shared/ProfastLogo/ProfastLogo";
 import Swal from "sweetalert2";
@@ -15,15 +18,19 @@ import useAuth from "../hooks/useAuth";
 
 export default function DashboardLayout() {
 
-  const {userLogOut, setUserDataLoading} = useAuth();
+  const { userLogOut, setUserDataLoading } = useAuth();
 
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const navItems = [
+    { name: "Home", icon: <House size={20} />, path: "/" },
     { name: "My Parcels", icon: <Package size={20} />, path: "/dashboard/myParcels" },
     { name: "Delivered Parcels", icon: <CheckCircle2 size={20} />, path: "/dashboard/delivered-parcels" },
+    { name: "Track a Parcel", icon: <MapPinCheckInside size={20} />, path: "/dashboard/trackParcel" },
+    { name: "Payment History", icon: <DollarSign size={20} />, path: "/dashboard/paymentHistory" },
+    { name: "Profile", icon: <UserRoundPen size={20} />, path: "/dashboard/profile" },
   ];
 
   // Color palette
@@ -80,7 +87,7 @@ export default function DashboardLayout() {
             className="flex items-center justify-between p-4 border-b border-opacity-30 text-white"
             style={{ borderColor: colors.sidebarText }}
           >
-            {!isCollapsed && <ProfastLogo />}
+            {!isCollapsed && <Link to="/dashboard"><ProfastLogo /></Link>}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-1 mt-6 cursor-pointer transition-colors"
@@ -97,8 +104,10 @@ export default function DashboardLayout() {
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-3 rounded-lg transition-colors duration-300 ${isActive ? "font-semibold" : "hover:opacity-80"
-                  }`
+                  `flex items-center gap-3 p-3 rounded-lg transition-all duration-300 border-l-4 border-transparent 
+                    ${isActive
+                    ? "bg-[#CAEB66] text-[#03373D] font-semibold border-l-[#CAEB66]"
+                    : "hover:border-l-[#CAEB66] hover:bg-[#CAEB66]/20"}`
                 }
                 style={({ isActive }) => ({
                   backgroundColor: isActive ? colors.buttonBg : "transparent",
@@ -134,7 +143,7 @@ export default function DashboardLayout() {
       {/* --- Mobile Drawer --- */}
       <div className="md:hidden absolute top-0 left-0 right-0 z-50">
         <div
-          className="flex items-center justify-between p-4"
+          className="flex items-center justify-between p-4 text-white"
           style={{
             backgroundColor: colors.sidebarBg,
             color: colors.sidebarText,
@@ -143,7 +152,7 @@ export default function DashboardLayout() {
           <button onClick={() => setIsDrawerOpen(true)} style={{ color: colors.sidebarText }}>
             <Menu size={26} />
           </button>
-          <ProfastLogo />
+          <Link to="/dashboard"><ProfastLogo /></Link>
         </div>
 
         {/* Drawer Overlay */}

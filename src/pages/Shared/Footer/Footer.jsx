@@ -10,7 +10,7 @@ const Footer = () => {
     return (
         <footer className="footer footer-horizontal footer-center bg-neutral text-neutral-content p-10 rounded-2xl mb-10">
             <aside>
-                <ProfastLogo />
+                <Link to="/"><ProfastLogo /></Link>
                 <p className="lg:w-8/12 mx-auto pb-6">
                     Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on    time, every time.
                 </p>

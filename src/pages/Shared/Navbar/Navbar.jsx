@@ -62,7 +62,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 {/* Navbar Logo */}
-                <ProfastLogo />
+                <Link to="/"><ProfastLogo /></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
