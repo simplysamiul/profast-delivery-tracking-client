@@ -6,10 +6,12 @@ import Swal from 'sweetalert2';
 import { PropagateLoader } from 'react-spinners';
 import { FaUpload } from "react-icons/fa";
 import axios from 'axios';
+import useAxios from '../../../hooks/useAxios';
 
 const Register = () => {
-    const { createUser, setUserDataLoading } = useContext(AuthContext);
+    const { createUser, setUserDataLoading, updateUserProfile } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
+    const axiosInstance = useAxios();
 
     // for image upload field
     const [preview, setPreview] = useState(null);
@@ -23,29 +25,47 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
     const onSubmit = data => {
         setLoading(true);
+        const displayName = data.name;
         const email = data.email;
         const password = data.password;
-        console.log(data)
-        // createUser(email, password)
-        //     .then(res => {
-        //         if (res.user.email) {
-        //             Swal.fire({
-        //                 text: "User Created Successfully ....!",
-        //                 icon: "success"
-        //             });
-        //             reset();
-        //             setLoading(false);
-        //             setUserDataLoading(false);
-        //             navigate(from);
-        //         }
-        //     }).catch(err => {
-        //         Swal.fire({
-        //             text: `${err.message}`,
-        //             icon: "error"
-        //         });
-        //         setLoading(false);
-        //         setUserDataLoading(false);
-        //     })
+        const photoURL = imageLink;
+        const profileInfo = {displayName, photoURL};
+        const userInfo = {email, displayName, photoURL, role: "user", createdAt: new Date().toISOString(), lastLogIn: new Date().toISOString()};
+
+
+        // sign up user
+        createUser(email, password)
+            .then(async (res) => {
+                if (res.user.email) {
+                    // update user profile info in databse
+                    const userRes = await axiosInstance.post("/user", userInfo);
+                    console.log(userRes)
+                    
+                    // update user profile info in firebase
+                    updateUserProfile(profileInfo)
+                    .then(()=> {
+                        
+                    }).catch(err => console.log(err))
+                    
+                    // user created notification
+                    Swal.fire({
+                        text: "User Created Successfully ....!",
+                        icon: "success"
+                    });
+
+                    reset();
+                    setLoading(false);
+                    setUserDataLoading(false);
+                    navigate(from);
+                }
+            }).catch(err => {
+                Swal.fire({
+                    text: `${err.message}`,
+                    icon: "error"
+                });
+                setLoading(false);
+                setUserDataLoading(false);
+            })
     }
 
     // handle image upload in Image BB
@@ -55,11 +75,10 @@ const Register = () => {
             field.onChange([file]);
             setPreview(URL.createObjectURL(file));
             const formData = new FormData();
-            formData.append("image", file)
-
+            formData.append("image", file);
+            
             const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE__image_upload_key}`, formData)
-                setImageLink(res.data.data.url);
-
+            setImageLink(res.data.data.url);
         }
     }
     return (

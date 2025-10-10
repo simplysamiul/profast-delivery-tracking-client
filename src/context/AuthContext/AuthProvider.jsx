@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../../firebase/firebase.init';
 import { AuthContext } from './AuthContext';
 import { GoogleAuthProvider } from "firebase/auth";
@@ -26,6 +26,10 @@ const AuthProvider = ({children}) => {
     const resetPass = (email) => {
         setUserDataLoading(true);
         return sendPasswordResetEmail(auth, email);
+    };
+    // update user profile
+    const updateUserProfile = (profileInfo) => {
+        return updateProfile(auth.currentUser, profileInfo);
     }
     // user login using google
     const googleLogIn = () => {
@@ -52,7 +56,7 @@ const AuthProvider = ({children}) => {
         }
     },[]);
 
-    const authInfo ={createUser, signInUser, googleLogIn, setUserDataLoading, userLogOut, user, userDataLoading, resetPass}
+    const authInfo ={createUser, signInUser, googleLogIn, setUserDataLoading, userLogOut, user, userDataLoading, resetPass, updateUserProfile}
     return (
         <AuthContext value={authInfo}>
             {children}
