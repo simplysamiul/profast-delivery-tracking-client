@@ -38,8 +38,7 @@ const Register = () => {
             .then(async (res) => {
                 if (res.user.email) {
                     // update user profile info in databse
-                    const userRes = await axiosInstance.post("/user", userInfo);
-                    console.log(userRes)
+                    await axiosInstance.post("/user", userInfo);
                     
                     // update user profile info in firebase
                     updateUserProfile(profileInfo)

@@ -14,6 +14,10 @@ import MyParcels from '../pages/Dashboard/MyParcels/MyParcels';
 import Payment from '../pages/Dashboard/Payment/Payment';
 import PaymentHistory from '../pages/Dashboard/PaymentHistory/PaymentHistory';
 import TrackParcel from '../pages/Dashboard/TrackParcel/TrackParcel';
+import BeARider from '../pages/Dashboard/BeARider/BeARider';
+import PendingRiders from '../pages/Dashboard/PendingRiders/PendingRiders';
+import VerifiedRiders from '../pages/Dashboard/VerifiedRiders/VerifiedRiders';
+import AllRidersList from '../pages/Dashboard/AllRidersList/AllRidersList';
 
 
 const router = createBrowserRouter([
@@ -30,27 +34,32 @@ const router = createBrowserRouter([
                 Component: Coverage,
             },
             {
-                path: "/sendParcel", 
+                path: "/sendParcel",
                 element: <PrivateRoute><SendParcel /></PrivateRoute>
+            },
+            {
+                path: "beARider",
+                element: <PrivateRoute><BeARider /></PrivateRoute>
             }
         ]
     },
     {
-        path: "/", 
+        path: "/",
         Component: AuthLayout,
         children: [
             {
-                path: "/login", 
+                path: "/login",
                 Component: Login
             },
             {
-                path: "/register", 
+                path: "/register",
                 Component: Register
             },
             {
                 path: "/forgetPassword",
                 Component: ForgetPassword
-            }
+            },
+
         ]
     },
     {
@@ -62,7 +71,7 @@ const router = createBrowserRouter([
                 Component: MyParcels
             },
             {
-                path: "payment/:id", 
+                path: "payment/:id",
                 Component: Payment
             },
             {
@@ -72,6 +81,18 @@ const router = createBrowserRouter([
             {
                 path: "trackParcel",
                 Component: TrackParcel
+            },
+            {
+                path: "pendingRiders",
+                Component: PendingRiders
+            },
+            {
+                path: "verifiedRiders",
+                Component: VerifiedRiders
+            },
+            {
+                path:"allRiders",
+                Component: AllRidersList
             }
         ]
     }

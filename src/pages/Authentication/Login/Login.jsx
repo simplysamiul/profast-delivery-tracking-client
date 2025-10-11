@@ -6,15 +6,17 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext/AuthContext';
 import Swal from 'sweetalert2';
 import { PropagateLoader } from 'react-spinners';
+import useAxios from '../../../hooks/useAxios';
 
 const Login = () => {
     // use context
     const { signInUser, googleLogIn, setUserDataLoading } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
-    
+
     const location = useLocation();
     const from = location?.state || "/";
     const navigate = useNavigate();
+    const axiousInstance = useAxios();
 
     // react hook form
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -48,8 +50,20 @@ const Login = () => {
     const handleGoolgeLogin = () => {
         setLoading(true);
         googleLogIn()
-            .then(res => {
+            .then(async (res) => {
                 if (res.user.email) {
+                    const user = res.user;
+                    const userInfo = {
+                        email: user.email,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        role: "user",
+                        createdAt: new Date().toISOString(),
+                        lastLogIn: new Date().toISOString()
+                    };
+                    // send user info to the databse
+                    await axiousInstance.post("/user", userInfo);
+
                     Swal.fire({
                         text: "User Login Successfully ....!",
                         icon: "success"
@@ -138,15 +152,15 @@ const Login = () => {
 
                     <div className="divider">Or</div>
 
-                    {loading ?  <div className='text-center mb-12'><PropagateLoader color='#03373D' /></div>
-                    :<button
-                        type="button"
-                        className="btn w-full border border-gray-300 bg-white hover:bg-gray-100 flex"
-                        onClick={handleGoolgeLogin}
-                    >
-                        <Lottie className='w-[80px]' animationData={googleIconAnimation} />
-                        Login with Google
-                    </button>}
+                    {loading ? <div className='text-center mb-12'><PropagateLoader color='#03373D' /></div>
+                        : <button
+                            type="button"
+                            className="btn w-full border border-gray-300 bg-white hover:bg-gray-100 flex"
+                            onClick={handleGoolgeLogin}
+                        >
+                            <Lottie className='w-[80px]' animationData={googleIconAnimation} />
+                            Login with Google
+                        </button>}
                 </form>
             </div>
         </div>
