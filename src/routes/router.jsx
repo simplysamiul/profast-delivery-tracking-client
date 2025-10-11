@@ -18,6 +18,7 @@ import BeARider from '../pages/Dashboard/BeARider/BeARider';
 import PendingRiders from '../pages/Dashboard/PendingRiders/PendingRiders';
 import VerifiedRiders from '../pages/Dashboard/VerifiedRiders/VerifiedRiders';
 import AllRidersList from '../pages/Dashboard/AllRidersList/AllRidersList';
+import MakeAdmin from '../pages/Dashboard/MakeAdmin/MakeAdmin';
 
 
 const router = createBrowserRouter([
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
             {
                 path:"allRiders",
                 Component: AllRidersList
+            },
+            {
+                path:"makeAdmin",
+                Component: MakeAdmin
             }
         ]
     }

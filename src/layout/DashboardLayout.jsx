@@ -9,6 +9,7 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { ImLocation2 } from "react-icons/im";
 import { MdSwitchAccount } from "react-icons/md";
 import { PiUserListFill } from "react-icons/pi";
+import { IoShieldCheckmarkSharp } from "react-icons/io5";
 
 export default function DashboardLayout() {
 
@@ -24,10 +25,11 @@ export default function DashboardLayout() {
     { name: "Delivered Parcels", icon: <FaCheckCircle size={20} />, path: "/dashboard/delivered-parcels" },
     { name: "Track a Parcel", icon: <ImLocation2 size={20} />, path: "/dashboard/trackParcel" },
     { name: "Payment History", icon: <FaCircleDollarToSlot size={20} />, path: "/dashboard/paymentHistory" },
-    { name: "Verified Riders", icon: <FaUserCheck size={20} />, path: "/dashboard/verifiedRiders" },
     { name: "All Riders", icon: <PiUserListFill size={20} />, path: "/dashboard/allRiders" },
+    { name: "Verified Riders", icon: <FaUserCheck size={20} />, path: "/dashboard/verifiedRiders" },
     { name: "Pending Riders", icon: <FaUserClock size={20} />, path: "/dashboard/pendingRiders" },
     { name: "Profile", icon: <MdSwitchAccount size={20} />, path: "/dashboard/profile" },
+    { name: "Make Admin", icon: <IoShieldCheckmarkSharp size={20} />, path: "/dashboard/makeAdmin" },
   ];
 
   // Color palette

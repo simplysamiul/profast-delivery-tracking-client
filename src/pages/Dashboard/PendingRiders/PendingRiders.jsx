@@ -7,7 +7,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PendingRiders = () => {
     const [selectedRider, setSelectedRider] = useState(null);
-    const axiousSecfure = useAxiosSecure();
+    const axiousSecure = useAxiosSecure();
     const { user } = useAuth();
 
 
@@ -15,34 +15,49 @@ const PendingRiders = () => {
     const { data: pendingRider = [], refetch } = useQuery({
         queryKey: ["pending-riders",],
         queryFn: async () => {
-            const res = await axiousSecfure.get("/riders?status=pending");
+            const res = await axiousSecure.get("/riders?status=pending");
             return res.data
         }
     })
 
     // Accept Handler
     const handleAccept = async (rider) => {
-
-        await axiousSecfure.put(`/riders/${rider._id}`, { status: "verified" })
-            .then((res) => {
-                if (res.data.modifiedCount) {
-                    Swal.fire({
-                        title: "Rider Approved",
-                        text: `${rider.name} has been accepted successfully.`,
-                        icon: "success",
-                        confirmButtonColor: "#03373D",
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Do you want to approve ${rider.name} as a rider?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#03373D",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, approve",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await axiousSecure.put(`/riders/${rider._id}`, {
+                        status: "verified",
+                        email: user.email
                     });
-                    refetch();
-                }
 
-            }).catch(err => {
-                Swal.fire({
-                    title: "Error",
-                    text: `${err.message}`,
-                    icon: "error",
-                });
-            })
+                    if (res.data.modifiedCount) {
+                        Swal.fire({
+                            title: "Rider Approved",
+                            text: `${rider.name} has been accepted successfully.`,
+                            icon: "success",
+                            confirmButtonColor: "#03373D",
+                        });
+                        refetch();
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: "Error",
+                        text: err.message,
+                        icon: "error",
+                    });
+                }
+            }
+        });
     };
+
 
     // Reject Handler with Confirm Popup    
     const handleReject = async (rider) => {
@@ -72,7 +87,7 @@ const PendingRiders = () => {
 
             // update rider info and send rejected message to the databse 
             try {
-                await axiousSecfure.put(`/riders/${rider._id}`, { status: "rejected", rejectMsg: reason })
+                await axiousSecure.put(`/riders/${rider._id}`, { status: "rejected", rejectMsg: reason })
                     .then((res) => {
                         if (res.data.modifiedCount) {
                             // Show confirmation
@@ -101,12 +116,23 @@ const PendingRiders = () => {
     // NID Image Fullscreen Popup
     const handleNidImagePreview = (imageUrl) => {
         Swal.fire({
+            title: "NID Verification Image",
             imageUrl: imageUrl,
             imageAlt: "NID Image",
             showConfirmButton: false,
-            background: "#000000cc",
+            showCloseButton: true,
+            background: "#CAEB66",
+            width: "50%",
+            padding: "1rem",
+            imageWidth: "100%",
+            imageHeight: "auto",
+            customClass: {
+                popup: "rounded-3xl shadow-2xl",
+                image: "rounded-lg object-contain",
+            },
         });
     };
+
 
     // Color badge for approval status
     const getPaymentBadge = (approval) => {
@@ -191,50 +217,37 @@ const PendingRiders = () => {
             {/* Details Modal */}
             {selectedRider && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-                    <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full relative">
+                    <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-3xl relative overflow-y-auto max-h-[90vh]">
+                        {/* Close button */}
                         <button
                             onClick={() => setSelectedRider(null)}
-                            className="absolute top-2 right-3 text-gray-600 hover:text-red-500 text-2xl font-bold"
+                            className="absolute top-3 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold"
                         >
                             ×
                         </button>
 
                         {/* Profile */}
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-6">
                             <img
                                 src={user.photoURL}
                                 alt="Profile"
-                                className="w-24 h-24 mx-auto rounded-full border-4 border-lightG object-cover"
+                                className="w-28 h-28 mx-auto rounded-full border-4 border-lightG object-cover shadow-md"
                             />
-                            <h3 className="text-xl font-bold mt-2 text-deepG">
+                            <h3 className="text-2xl font-bold mt-3 text-deepG">
                                 {selectedRider.name}
                             </h3>
                             <p className="text-sm text-gray-500">{selectedRider.email}</p>
                         </div>
 
                         {/* Details */}
-                        <div className="grid grid-cols-2 gap-3 text-sm">
-                            <p>
-                                <strong>Age:</strong> {selectedRider.age}
-                            </p>
-                            <p>
-                                <strong>Contact:</strong> {selectedRider.contact}
-                            </p>
-                            <p>
-                                <strong>District:</strong> {selectedRider.riderDistrict}
-                            </p>
-                            <p>
-                                <strong>Warehouse:</strong> {selectedRider.warehouse}
-                            </p>
-                            <p>
-                                <strong>Bike Model:</strong> {selectedRider.model}
-                            </p>
-                            <p>
-                                <strong>Reg No:</strong> {selectedRider.regNo}
-                            </p>
-                            <p>
-                                <strong>NID:</strong> {selectedRider.nid}
-                            </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <p><strong>Age:</strong> {selectedRider.age}</p>
+                            <p><strong>Contact:</strong> {selectedRider.contact}</p>
+                            <p><strong>District:</strong> {selectedRider.riderDistrict}</p>
+                            <p><strong>Warehouse:</strong> {selectedRider.warehouse}</p>
+                            <p><strong>Bike Model:</strong> {selectedRider.model}</p>
+                            <p><strong>Reg No:</strong> {selectedRider.regNo}</p>
+                            <p><strong>NID:</strong> {selectedRider.nid}</p>
                             <p>
                                 <strong>Applied:</strong>{" "}
                                 {new Date(selectedRider.applyAt).toLocaleString()}
@@ -242,23 +255,26 @@ const PendingRiders = () => {
                         </div>
 
                         {/* NID Image */}
-                        <div className="mt-4">
-                            <p className="font-semibold text-deepG mb-2">
+                        <div className="mt-6">
+                            <p className="font-semibold text-deepG mb-3 text-lg">
                                 NID Verification Image:
                             </p>
-                            <img
-                                onClick={() => handleNidImagePreview(selectedRider.nidImage)}
-                                src={selectedRider.nidImage}
-                                alt="NID"
-                                className="w-full rounded-lg border cursor-pointer hover:opacity-90 transition"
-                            />
-                            <p className="text-xs text-gray-400 text-center mt-1">
+                            <div className="flex justify-center">
+                                <img
+                                    onClick={() => handleNidImagePreview(selectedRider.nidImage)}
+                                    src={selectedRider.nidImage}
+                                    alt="NID"
+                                    className="w-full sm:w-3/4 md:w-1/2 rounded-lg border cursor-pointer hover:opacity-90 transition"
+                                />
+                            </div>
+                            <p className="text-xs text-gray-400 text-center mt-2">
                                 (Click to view full image)
                             </p>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
