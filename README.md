@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://i.ibb.co.com/PsgKLYq2/logo1.png" width="200"/>
+    <img src="https://i.ibb.co.com/5gGtwNyW/logo.png" width="200"/>
 </div>
 
 <h2 align="center"> ProFast | A Professional Parcel Booking and Delivery Management System</h2>
