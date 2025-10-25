@@ -135,7 +135,7 @@ A visual walkthrough of ProFast interface and features.
 
 | Home Page |
 |--------------|-----------|-----------------|
-| <img src="https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png" width="300"/> |
+| <img src="https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png" width="900"/> |
 
 </div>
 ---
