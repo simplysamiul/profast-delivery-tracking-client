@@ -115,18 +115,22 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 ---
 
-## 📸 Project Screenshots
+```markdown
+## 🖼️ Project Preview Gallery
 
-> Upload images to GitHub issues or Imgur, then replace these example image URLs.
+A visual walkthrough of ProFast interface and features.
 
-| Homepage | Dashboard |
-|---------|-----------|
-| ![Homepage Screenshot](https://via.placeholder.com/450x250](https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png)) | ![Dashboard Screenshot](https://via.placeholder.com/450x250) |
+<div align="center">
 
-| Mobile Responsive | Booking Page |
-|---------|-----------|
-| ![Mobile View](https://via.placeholder.com/450x250) | ![Booking Page](https://via.placeholder.com/450x250) |
+| Home Page | Service List | Service Details |
+|----------|--------------|----------------|
+| <img src="https://via.placeholder.com/300x180" width="300"/> | <img src="https://i.ibb.co.com/GQ12HkMw/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-40-45.png" width="300"/> | <img src="https://i.ibb.co.com/M5Wbd9zQ/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-42-26.png" width="300"/> |
 
+| Booking Flow | Dashboard | Mobile Responsive |
+|--------------|-----------|-----------------|
+| <img src="https://i.ibb.co.com/ynD9tRQc/screencapture-zap-shift-64d7f-web-app-dashboard-track-Parcel-TRK063158-2025-10-25-20-43-21.png" width="300"/> | <img src="https://i.ibb.co.com/xtxdRTvX/screencapture-zap-shift-64d7f-web-app-dashboard-my-Parcels-2025-10-25-20-53-18.png" width="300"/> | <img src="https://i.ibb.co.com/svZgfw9X/screencapture-zap-shift-64d7f-web-app-coverage-2025-10-25-20-54-23.png" width="300"/> |
+
+</div>
 ---
 
 ## 📦 Parcel Delivery System Flow
