@@ -1,7 +1,7 @@
 <h2 align="center"> ProFast | A Professional Parcel Booking and Delivery Management System</h2>
 
 <p align="center">
-A full-stack solution built for booking, managing, and providing professional services with ease.
+A full-stack solution built for booking, managing, and providing professional parcel booking and delivery services.
 </p>
 
 ---
