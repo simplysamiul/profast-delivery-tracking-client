@@ -121,9 +121,9 @@ A visual walkthrough of ProFast interface and features.
 
 <div align="center">
 
-| Home Page | Admin Overview | Client Overview |
+| Admin Overview | Client Overview | Rider Assign |
 |----------|--------------|----------------|
-| <img src="https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png" width="300"/> | <img src="https://i.ibb.co.com/GQ12HkMw/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-40-45.png" width="300"/> | <img src="https://i.ibb.co.com/M5Wbd9zQ/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-42-26.png" width="300"/> |
+<img src="https://i.ibb.co.com/GQ12HkMw/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-40-45.png" width="300"/> | <img src="https://i.ibb.co.com/M5Wbd9zQ/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-42-26.png" width="300"/> | <img src="https://i.ibb.co.com/Xf0FgM9T/rider-assign.png" width="300"/> |
 
 | Parcel Tracking | Parcel Details | Coverage Map |
 |--------------|-----------|-----------------|
@@ -133,19 +133,22 @@ A visual walkthrough of ProFast interface and features.
 |--------------|-----------|-----------------|
 | <img src="https://i.ibb.co.com/Vc1f8kt9/booking.png" width="300"/> | <img src="[https://i.ibb.co.com/xtxdRTvX/screencapture-zap-shift-64d7f-web-app-dashboard-my-Parcels-2025-10-25-20-53-18.png](https://i.ibb.co.com/35tHZpdb/rider-list.png)" width="300"/> | <img src="https://i.ibb.co.com/993VX4kh/rider-apply-form.png" width="300"/> |
 
+| Home Page |
+|--------------|-----------|-----------------|
+| <img src="https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png" width="300"/> |
+
 </div>
 ---
 
+## 🚚 Parcel Delivery Workflow
 
-## 📦 Parcel Delivery System Flow
+This diagram shows the step by step journey of a parcel inside the ProFast system.
 
-This visual flow explains how parcels move inside the platform from pickup to delivery.
-
-
+```mermaid
 flowchart TD
     A[📦 Agent Collects Parcel] --> B{🏙️ Within Same City?}
-    B -- ✅ Yes --> C[🚚 Agent Delivers Parcel]
-    B -- ❌ No --> D[🏭 Sent to Warehouse]
-    D --> E[✈️ Warehouse Dispatches to Destination]
-    E --> F[🧑‍💼 Admin Assigns Delivery Agent]
-    F --> G[🚚 Final Parcel Delivery to Customer]
+    B -- ✅ Yes --> C[🚚 Direct Delivery by Agent]
+    B -- ❌ No --> D[🏭 Send to Central Warehouse]
+    D --> E[✈️ Dispatch to Destination City]
+    E --> F[🧑‍💼 Admin Assigns Local Delivery Agent]
+    F --> G[🚚 Final Delivery to Customer]
