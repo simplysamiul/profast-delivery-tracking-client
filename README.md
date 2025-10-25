@@ -1,4 +1,4 @@
-<h1 align="center">🚀 ProFast | A Professional Services Management Platform</h1>
+<h2 align="center"> ProFast | A Professional Parcel Booking and Delivery Management System</h2>
 
 <p align="center">
 A full-stack solution built for booking, managing, and providing professional services with ease.
@@ -17,9 +17,12 @@ A full-stack solution built for booking, managing, and providing professional se
 
 ## 📌 Short Project Description
 
-ProFast is a dynamic full-stack web application designed to connect service providers and customers in a seamless, intuitive platform. Users can browse professional services, book appointments, pay securely, and track their orders in real time. Service providers can manage their bookings, update availability, and view financial insights through an optimized dashboard.
+ProFast is a dynamic full-stack Parcel Booking and Delivery Management System built to streamline modern courier operations. Customers can easily book parcels online, schedule pickup, track delivery progress in real-time, and manage their shipment orders efficiently. Delivery agents can access assigned parcels, update status during transit, and complete deliveries with proper verification. 
 
-Whether you are a freelancer or a business, ProFast makes booking and managing professional services fast like lightning.
+Administrators oversee the entire logistics flow, including agent assignments, parcel routing, warehouse forwarding, and user management through an advanced role-based dashboard. 
+
+From booking to doorstep delivery, ProFast ensures fast, secure, and reliable logistics automation for users and delivery service providers.
+
 
 ---
 
@@ -47,29 +50,30 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 | Role | Access & Features |
 |------|-----------------|
-| 👤 User / Customer | Browse services, book orders, pay, track status, review history |
-| 🧑‍💼 Service Provider | Manage services, view bookings, update progress, earning reports |
-| 👑 Admin | Full control: manage users, approve providers, modify any data |
+| 👤 User / Customer | Book parcels, Browse booking list, online pay, track parcel status, see assigned rider |
+| 🧑‍💼 Rider | See assigned parcel, manage parcel status, update progress, earning reports |
+| 👑 Admin | Full control: manage users, approve riders, modify any data |
 
 ---
 
 ## 🧩 Dashboard Overview
 
-### Provider Dashboard
+### Rider Dashboard
 ✔ Booking requests list  
-✔ Approve / Reject / Complete services  
+✔ Approve / Reject / Complete parcels  
 ✔ Earning summary  
-✔ Add new services
+✔ Can see full overview
 
 ### User Dashboard
 ✔ View booking history  
 ✔ Secure payments  
 ✔ Cancel bookings  
-✔ Edit profile
+✔ Parcel tracking
 
 ### Admin Dashboard
 ✔ Manage users  
-✔ Global booking overview  
+✔ Approve riders / Reject riders / see verified riders
+✔ Mnage role
 ✔ Admin-only privileged actions
 
 ---
@@ -117,7 +121,7 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 ## 🖼️ Project Preview Gallery
 
-A visual walkthrough of ProFast interface and features.
+A visual walkthrough of the ProFast interface and features.
 
 <div align="center">
 
