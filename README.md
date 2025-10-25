@@ -1,3 +1,7 @@
+<div align="center">
+    <img src="https://i.ibb.co.com/5gGtwNyW/logo.png" width="100"/>
+</div>
+
 <h2 align="center"> ProFast | A Professional Parcel Booking and Delivery Management System</h2>
 
 <p align="center">
