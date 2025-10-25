@@ -121,7 +121,7 @@ A visual walkthrough of ProFast interface and features.
 
 <div align="center">
 
-| Home Page | Service List | Service Details |
+| Home Page | Admin Overview | Client Overview |
 |----------|--------------|----------------|
 | <img src="https://via.placeholder.com/300x180" width="300"/> | <img src="https://i.ibb.co.com/GQ12HkMw/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-40-45.png" width="300"/> | <img src="https://i.ibb.co.com/M5Wbd9zQ/screencapture-zap-shift-64d7f-web-app-dashboard-2025-10-25-20-42-26.png" width="300"/> |
 
