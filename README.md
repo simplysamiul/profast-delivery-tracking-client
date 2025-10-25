@@ -26,6 +26,9 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 ## ⭐ Key Features
 
 ✅ Authentication and Secure Role Management (Admin, Provider, Customer)  
+✅ Automated Pricing & Tracking 
+✅ Nationwide Coverage (64 districts) with location pointed map
+✅ Transparent Commission Structure
 ✅ Browse & Filter Services Based on Category  
 ✅ Book Service With Real-Time Slot Validation  
 ✅ Provider Dashboard With Analytics  
@@ -91,6 +94,8 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 - Axios
 - React Query / TanStack
 - Firebase Authentication
+- React Leaflet
+- SweetAlert
 
 ### 🔙 Backend
 - Node.js
@@ -124,10 +129,15 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 ---
 
-## 🧩 System Architecture Diagram
+## 📦 Parcel Delivery System Flow
+
+This visual flow explains how parcels move inside the platform from pickup to delivery.
 
 ```mermaid
-flowchart LR
-User[Client / User] -->|HTTP Requests| Frontend[React App]
-Frontend -->|Auth + CRUD| Backend[Express Server]
-Backend -->|Query / Store| Database[(MongoDB Atlas)]
+flowchart TD
+    A[📦 Agent Collects Parcel] --> B{🏙️ Within Same City?}
+    B -- ✅ Yes --> C[🚚 Agent Delivers Parcel]
+    B -- ❌ No --> D[🏭 Sent to Warehouse]
+    D --> E[✈️ Warehouse Dispatches to Destination]
+    E --> F[🧑‍💼 Admin Assigns Delivery Agent]
+    F --> G[🚚 Final Parcel Delivery to Customer]
