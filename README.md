@@ -116,7 +116,7 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 | Homepage | Dashboard |
 |---------|-----------|
-| ![Homepage Screenshot]([https://via.placeholder.com/450x250](https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png)) | ![Dashboard Screenshot](https://via.placeholder.com/450x250) |
+| ![Homepage Screenshot](https://via.placeholder.com/450x250](https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png)) | ![Dashboard Screenshot](https://via.placeholder.com/450x250) |
 
 | Mobile Responsive | Booking Page |
 |---------|-----------|
