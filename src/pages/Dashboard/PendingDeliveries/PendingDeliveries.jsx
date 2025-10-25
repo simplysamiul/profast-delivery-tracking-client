@@ -1,104 +1,119 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { Eye, Edit, Trash2, PackageX, CircleDollarSign, MapPinCheckInside, Hash, Package, Boxes, Scale, Clock, Wallet, CreditCard, Settings, } from "lucide-react";
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
+import { FaLocationArrow, FaPhoneAlt, FaTruckMoving, FaUser } from 'react-icons/fa';
+import { Eye, PackageX, Hash, Package, Boxes, Scale, Wallet, Settings, } from "lucide-react";
+import { RiCheckboxCircleFill } from "react-icons/ri";
 import Swal from 'sweetalert2';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaFileInvoiceDollar } from 'react-icons/fa';
+import useTrackingLogger from '../../../hooks/useTrackingLogger';
 
-const MyParcels = () => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
-
-    const [selectedParcel, setSelectedParcel] = useState(null);
+const PendingDeliveries = () => {
     const axiousSecure = useAxiosSecure();
-    const { data: parcels = [], refetch } = useQuery({
-        queryKey: ['my-parcels', user.email],
+    const [selectedParcel, setSelectedParcel] = useState(null);
+    const { user } = useAuth();
+    const { logTracking } = useTrackingLogger();
+    const queryClient = useQueryClient();
+
+    // load parcels assigned data
+    const { data: parcels = [], isLoading } = useQuery({
+        queryKey: ["riderParcels"],
+        enabled: !!user.email,
         queryFn: async () => {
-            const res = await axiousSecure.get(`/parcels?email=${user.email}`);
+            const res = await axiousSecure.get(`/rider/parcels?email=${user.email}`)
             return res.data;
         }
+    });
+
+
+    // mutation for updating parcel status
+    const { mutateAsync: updateStatus } = useMutation({
+        mutationFn: async ({ parcel, status }) => {
+            const res = await axiousSecure.patch(`/parcel/${parcel._id}/status`, {
+                status,
+                riderEmail: user.email
+            });
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(["riderParcels"])
+        }
     })
-    // Color badge for payment status
-    const getPaymentBadge = (status) => {
-        switch (status) {
-            case "paid":
-                return <span className="badge bg-green-500 text-white">Paid</span>;
-            case "pending":
-                return <span className="badge bg-yellow-500 text-white">Pending</span>;
-            case "unpaid":
-            default:
-                return <span className="badge bg-red-500 text-white">Unpaid</span>;
-        }
-    };
 
-    // handel parcel delet function
-    const handleParcelDelete = async (id) => {
-        const confirm = await Swal.fire({
-            title: "Are you sure ?",
-            text: "This parcel will be permanently deleted !",
-            icon: "warning",
+    // update parcel status
+    const handleStatusUpdate = (parcel, newStatus) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Mark parcel as ${newStatus.replace("_", " ")}?`,
+            icon: "question",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#CAEB66",
-            cancelButtonColor: "#03373D"
-        });
-        if (confirm.isConfirmed) {
-            try {
-                axiousSecure.delete(`/parcels/${id}`)
-                    .then(res => {
-                        if (res.data.deletedCount) {
-                            Swal.fire({
-                                text: "Parcel Deleted Successfully ....!",
-                                icon: "success"
-                            });
-                            refetch();
+            confirmButtonText: "Yes, update",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateStatus({ parcel, status: newStatus })
+                    .then(async () => {
+                        Swal.fire("Updated!", `Parcel status ${newStatus}`, "success");
+
+                        // log tracking
+                        let trackDetails = `Picked up by ${user.displayName}`
+                        if (newStatus === 'delivered') {
+                            trackDetails = `Delivered by ${user.displayName}`
                         }
+                        await logTracking({
+                            trackingId: parcel.trackingId,
+                            status: newStatus,
+                            details: trackDetails,
+                            updateBy: user.email
+                        });
+
                     })
-            } catch (error) {
-                Swal.fire({
-                    text: `${error.message}`,
-                    icon: "error"
-                });
+                    .catch((err) => {
+                        console.log(err)
+                        Swal.fire("Error!", "Failed to update status.", "error");
+                    });
             }
-        }
+        });
     };
 
-
-    // handel payment process function
-    const handlePayment = (id) => {
-        navigate(`/dashboard/payment/${id}`)
-    }
     return (
         <div className="max-w-8xl mx-auto p-4 md:p-6">
             <h2 className="text-3xl font-bold mb-6 text-[#03373D] text-center border-b-2 pb-2 mt-10 md:-mt-3">
-                My Parcels
+                Pending Parcel
             </h2>
 
             {/* === No Parcel Found State === */}
-            {parcels.length === 0 ? (
+            {isLoading || parcels.length === 0 ? (
                 <div className="flex flex-col items-center justify-center text-center py-20">
                     <div className="bg-[#03373D]/10 p-6 rounded-full mb-4">
                         <PackageX size={60} className="text-[#03373D]" />
                     </div>
                     <h3 className="text-lg font-semibold text-[#03373D]">
-                        No Parcels Found
+                        No Parcels Assigned
                     </h3>
-                    <p className="text-gray-500 text-lg mt-2">
-                        You haven’t booked any parcels yet.
-                    </p>
                 </div>
             ) : (
-                /* === Parcels Table === */
+                /* === Assigned Parcels Table === */
                 <div className="w-full overflow-x-auto rounded-xl border border-gray-200 shadow-md bg-white">
                     <table className="table w-full min-w-[700px]">
                         <thead className="bg-[#03373D] text-lightG">
                             <tr>
                                 <th className="py-3 px-4 text-left">
                                     <span className="flex items-center gap-2">
-                                        <Hash size={16} className="text-lightG" />
+                                        <Hash size={14} className="text-lightG" />
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <FaPhoneAlt size={16} className="text-lightG" />
+                                        Reciver Name
+                                    </span>
+                                </th>
+
+                                <th className="py-3 px-4 text-left">
+                                    <span className="flex items-center gap-2">
+                                        <FaUser size={16} className="text-lightG" />
+                                        Phone
                                     </span>
                                 </th>
 
@@ -125,13 +140,6 @@ const MyParcels = () => {
 
                                 <th className="py-3 px-4 text-left">
                                     <span className="flex items-center gap-2">
-                                        <Clock size={16} className="text-lightG" />
-                                        Booking Time
-                                    </span>
-                                </th>
-
-                                <th className="py-3 px-4 text-left">
-                                    <span className="flex items-center gap-2">
                                         <Wallet size={16} className="text-lightG" />
                                         Delivery Charge
                                     </span>
@@ -139,8 +147,8 @@ const MyParcels = () => {
 
                                 <th className="py-3 px-4 text-left">
                                     <span className="flex items-center gap-2">
-                                        <CreditCard size={16} className="text-lightG" />
-                                        Payment
+                                        <FaLocationArrow size={16} className="text-lightG" />
+                                        Delivery Location
                                     </span>
                                 </th>
 
@@ -159,12 +167,13 @@ const MyParcels = () => {
                                     className="hover:bg-lightG transition-colors"
                                 >
                                     <td>{index + 1}</td>
+                                    <td className="font-medium max-w-[180px] truncate">{parcel.receiverName}</td>
+                                    <td className="font-medium max-w-[180px] truncate">{parcel.receiverContact}</td>
                                     <td className="font-medium max-w-[180px] truncate">{parcel.parcelName}</td>
                                     <td>{parcel.parcelType}</td>
                                     <td>{`${parcel.parcelWeight ? parcel.parcelWeight + "-(KG)" : "0"}`}</td>
-                                    <td>{parcel.bookingTime}</td>
                                     <td><span className='font-semibold'>BDT -</span> {parcel.deliveryCharge} /-</td>
-                                    <td>{getPaymentBadge(parcel.paymentStatus)}</td>
+                                    <td>{parcel.receiverWarehouse}</td>
                                     <td className="flex justify-center gap-2 py-2 mt-4 xl:mt-0">
                                         {/* View */}
                                         <button
@@ -174,36 +183,22 @@ const MyParcels = () => {
                                             <Eye size={16} />
                                         </button>
 
-                                        {/* Payment */}
-                                        {parcel.paymentStatus === "unpaid" && <button
-                                            className="btn btn-sm bg-blue-600 hover:bg-blue-800 text-white tooltip" data-tip="Payment"
-                                            onClick={() => handlePayment(parcel._id)}
+                                        {/* Picup parcel */}
+                                        {parcel?.status === "assigned" && <button
+                                            className="btn btn-sm bg-red-500 hover:bg-red-700 text-white tooltip" data-tip="Mark Pickup"
+                                            onClick={() => handleStatusUpdate(parcel, "in_transit")}
                                         >
-                                            <CircleDollarSign size={16} />
+                                            <FaTruckMoving size={16} />
                                         </button>}
 
-                                        {/* Edit */}
-                                        {parcel.paymentStatus === "unpaid" && (
-                                            <button className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white tooltip" data-tip="Edit">
-                                                <Edit size={16} />
-                                            </button>
-                                        )}
+                                        {/* Delivered parcel */}
+                                        {parcel?.status === "in_transit" && <button
+                                            className="btn btn-sm bg-green-400 hover:bg-green-700 text-white tooltip" data-tip="Delivered"
+                                            onClick={() => handleStatusUpdate(parcel, "delivered")}
+                                        >
+                                            <RiCheckboxCircleFill size={16} />
+                                        </button>}
 
-                                        {/* Delete */}
-                                        {parcel.paymentStatus === "unpaid" && (
-                                            <button onClick={() => handleParcelDelete(parcel._id)} className="btn btn-sm bg-red-500 hover:bg-red-600 text-white tooltip" data-tip="Delete">
-                                                <Trash2 size={16} />
-                                            </button>
-                                        )}
-
-                                        {/* Track parcdel */}
-                                        {parcel.paymentStatus === "paid" && (
-                                            <Link to={`/dashboard/trackParcel/${parcel.trackingId}`}>
-                                                <button className="btn btn-sm bg-yellow-500 hover:bg-yellow-600 text-white tooltip" data-tip="Track">
-                                                    <MapPinCheckInside size={16} />
-                                                </button>
-                                            </Link>
-                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -287,4 +282,4 @@ const MyParcels = () => {
     );
 };
 
-export default MyParcels;
+export default PendingDeliveries;

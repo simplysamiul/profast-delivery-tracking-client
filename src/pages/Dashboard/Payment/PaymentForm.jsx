@@ -6,6 +6,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Loader from '../../Shared/Loader/Loader';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import useTrackingLogger from '../../../hooks/useTrackingLogger';
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -15,6 +16,7 @@ const PaymentForm = () => {
     const { id: parcelId } = useParams();
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
+    const {logTracking} = useTrackingLogger();
     const naviagte = useNavigate();
 
 
@@ -98,6 +100,15 @@ const PaymentForm = () => {
                         `,
                         showCloseButton: true
                     });
+
+                    // send data for tracking
+                    await logTracking({
+                        trackingId: parcelInfo.trackingId,
+                        status: "payment_done",
+                        details: `Paid by ${user.email}`,
+                        updateBy: user.email
+
+                    })
                     naviagte("/dashboard/myParcels")
 
                 }

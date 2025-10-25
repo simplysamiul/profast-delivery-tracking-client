@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import ProfastLogo from '../ProfastLogo/ProfastLogo';
 import useAuth from '../../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import useUserRole from '../../../hooks/useUserRole';
 // import NavbarLogo from '../../../assets/'
 
 const Navbar = () => {
@@ -12,7 +13,6 @@ const Navbar = () => {
         <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/sendParcel">Send Parcel</NavLink></li>
         <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/coverage">Coverage</NavLink></li>
         <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/about">About Us</NavLink></li>
-        <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/pricing">Pricing</NavLink></li>
         <li className='hover:bg-lightG hover:text-deepG font-semibold duration-300 mx-2'><NavLink to="/beARider">Be a Rider</NavLink></li>
         {
             user && <>

@@ -63,7 +63,6 @@ const Login = () => {
                     };
                     // send user info to the databse
                     await axiousInstance.post("/user", userInfo);
-
                     Swal.fire({
                         text: "User Login Successfully ....!",
                         icon: "success"

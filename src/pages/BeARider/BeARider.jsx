@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Upload, Trash2 } from "lucide-react";
-import useAuth from "../../../hooks/useAuth";
-import riderImg from '../../../assets/agent-pending.png'
+import useAuth from "../../hooks/useAuth";
+import riderImg from '../../assets/agent-pending.png'
 import axios from "axios";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const BeARider = () => {
@@ -25,7 +25,7 @@ const BeARider = () => {
     reset,
   } = useForm();
 
-  // ✅ Load warehouse data from JSON
+  // Load warehouse data from JSON
   useEffect(() => {
     fetch("/warehouses.json")
       .then((res) => res.json())
@@ -56,10 +56,9 @@ const BeARider = () => {
   const onSubmit = async (data) => {
     const nidImage = riderNidLink;
     const riderInfo = { ...data, nidImage, approval: "pending", applyAt: new Date().toISOString() };
-
     // post rider application to the databse 
     setLoading(true);
-    axiousSecure.post("/riders", riderInfo)
+    await axiousSecure.post("/riders", riderInfo)
       .then(res => {
         if (res.data.insertedId) {
           Swal.fire({
@@ -271,11 +270,11 @@ const BeARider = () => {
 
           {/* Submit Button */}
           {loading ? <div className="flex items-center justify-center my-6"><span className="loading loading-spinner loading-xl"></span></div>
-          :<button
-            type="submit"
-            className="btn bg-lightG hover:bg-deepG hover:text-white text-deepG w-full">
-            Apply Now
-          </button>}
+            : <button
+              type="submit"
+              className="btn bg-lightG hover:bg-deepG hover:text-white text-deepG w-full">
+              Apply Now
+            </button>}
         </form>
       </div>
 

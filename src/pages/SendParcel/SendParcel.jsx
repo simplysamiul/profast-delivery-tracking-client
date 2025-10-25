@@ -3,18 +3,22 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router-dom";
+import useTrackingLogger from "../../hooks/useTrackingLogger";
 
 const SendParcel = () => {
   const { user } = useAuth();
   const axiousSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const [wareHouses, setWareHouses] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [senderDistrict, setSenderDistrict] = useState("");
   const [receiverDistrict, setReceiverDistrict] = useState("");
   const [parcelType, setParcelType] = useState("document");
+  const {logTracking} = useTrackingLogger();
 
-  // ✅ Load warehouse data from JSON
+  //  Load warehouse data from JSON
   useEffect(() => {
     fetch("/warehouses.json")
       .then((res) => res.json())
@@ -26,7 +30,7 @@ const SendParcel = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  // ✅ React Hook Form setup
+  // React Hook Form setup
   const {
     register,
     handleSubmit,
@@ -34,7 +38,7 @@ const SendParcel = () => {
     formState: { errors },
   } = useForm();
 
-  // ✅ Delivery Charge Calculator
+  //  Delivery Charge Calculator
   const calculateDeliveryCharge = (parcelType, weight, deliveryType) => {
     let charge = 0;
     let breakdown = "";
@@ -79,7 +83,7 @@ const SendParcel = () => {
     return { charge, breakdown };
   };
 
-  // ✅ Handle form submission
+  // Handle form submission
   const onSubmit = (data) => {
     const weight = parcelType === "document" ? 0 : Number(data.parcelWeight || 0);
     const deliveryType =
@@ -91,11 +95,11 @@ const SendParcel = () => {
       deliveryType
     );
 
-    // ✅ Generate booking info (NEW)
+    // Generate booking info (NEW)
     const bookingTime = new Date().toLocaleString(); // date generator
     const trackingId = `TRK${Date.now().toString().slice(-6)}`; // Simple unique ID for tracking
 
-    // ✅ Add all extra info into form data
+    // Add all extra info into form data
     const parcelInfo = {
       ...data,
       parcelType,
@@ -108,7 +112,7 @@ const SendParcel = () => {
       paymentStatus: "unpaid"
     };
 
-    // ✅ SweetAlert to confirm booking
+    // SweetAlert to confirm booking
     Swal.fire({
       title: "Delivery Charge",
       html: `
@@ -137,7 +141,7 @@ const SendParcel = () => {
 
         // post a parcel to the databse
         axiousSecure.post("/parcels", parcelInfo)
-          .then(res => {
+          .then(async (res) => {
             if (res.data.insertedId) {
               Swal.fire({
                 icon: "success",
@@ -152,7 +156,16 @@ const SendParcel = () => {
               });
               reset();
 
-              /*****************//////////// from here redirect to the payment getway page //////////////*************** */
+              // send data for parcel tracking
+              await logTracking({
+                trackingId : trackingId,
+                status : "Parcel_created",
+                details : `Created by ${user.email}`,
+                updateBy: user.email
+             })
+
+              navigate("/dashboard/myParcels")
+              
             }
           }).catch(err => {
             Swal.fire({
@@ -160,6 +173,7 @@ const SendParcel = () => {
               text: `${err.message}`,
               confirmButtonColor: "#CAEB66",
             });
+            console.log("Errrrrrrooooooo", err)
           })
       }
     });
@@ -175,7 +189,7 @@ const SendParcel = () => {
         Enter your parcel details
       </h2>
 
-      {/* ✅ Parcel Type Section */}
+      {/*  Parcel Type Section */}
       <div className="flex items-center gap-6 mb-8">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -202,7 +216,7 @@ const SendParcel = () => {
         </label>
       </div>
 
-      {/* ✅ Main Form */}
+      {/* Main Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* Parcel Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -224,7 +238,7 @@ const SendParcel = () => {
             )}
           </div>
 
-          {/* ✅ Parcel Weight - hidden for document */}
+          {/* Parcel Weight - hidden for document */}
           {parcelType === "not-document" && (
             <div>
               <label className="font-semibold text-gray-700 mb-2 block">
@@ -248,7 +262,7 @@ const SendParcel = () => {
 
         <hr className="border-gray-200" />
 
-        {/* ✅ Sender & Receiver Sections */}
+        {/* Sender & Receiver Sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* ===================== SENDER SECTION ===================== */}
           <div>
@@ -269,7 +283,7 @@ const SendParcel = () => {
                 />
               </div>
 
-              {/* ✅ DISTRICT */}
+              {/* DISTRICT */}
               <div>
                 <label className="font-semibold text-gray-700 mb-2 block">
                   District
@@ -288,7 +302,7 @@ const SendParcel = () => {
                 </select>
               </div>
 
-              {/* ✅ WAREHOUSE (covered_area of selected district) */}
+              {/* WAREHOUSE (covered_area of selected district) */}
               <div>
                 <label className="font-semibold text-gray-700 mb-2 block">
                   Warehouse (Covered Area)
@@ -366,7 +380,7 @@ const SendParcel = () => {
                 />
               </div>
 
-              {/* ✅ DISTRICT */}
+              {/* DISTRICT */}
               <div>
                 <label className="font-semibold text-gray-700 mb-2 block">
                   District
@@ -385,7 +399,7 @@ const SendParcel = () => {
                 </select>
               </div>
 
-              {/* ✅ WAREHOUSE (covered_area of selected district) */}
+              {/* WAREHOUSE (covered_area of selected district) */}
               <div>
                 <label className="font-semibold text-gray-700 mb-2 block">
                   Warehouse (Covered Area)

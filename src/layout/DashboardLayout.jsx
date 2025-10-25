@@ -4,17 +4,20 @@ import { Menu, Package, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import ProfastLogo from "../pages/Shared/ProfastLogo/ProfastLogo";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
-import { FaCheckCircle, FaHome, FaUserCheck, FaUserClock } from "react-icons/fa";
-import { FaCircleDollarToSlot } from "react-icons/fa6";
+import { FaCheckCircle, FaHome, FaUserCheck, FaUserClock, FaWallet } from "react-icons/fa";
+import { FaCircleDollarToSlot, FaClockRotateLeft } from "react-icons/fa6";
 import { ImLocation2 } from "react-icons/im";
 import { MdSwitchAccount } from "react-icons/md";
 import { PiUserListFill } from "react-icons/pi";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
+import useUserRole from "../hooks/useUserRole";
+import { LuBike } from "react-icons/lu";
+import { IoMdDoneAll } from "react-icons/io";
 
 export default function DashboardLayout() {
 
   const { userLogOut, setUserDataLoading } = useAuth();
-
+  const { role, roleLoading } = useUserRole();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -22,15 +25,30 @@ export default function DashboardLayout() {
   const navItems = [
     { name: "Home", icon: <FaHome size={20} />, path: "/" },
     { name: "My Parcels", icon: <Package size={20} />, path: "/dashboard/myParcels" },
-    { name: "Delivered Parcels", icon: <FaCheckCircle size={20} />, path: "/dashboard/delivered-parcels" },
     { name: "Track a Parcel", icon: <ImLocation2 size={20} />, path: "/dashboard/trackParcel" },
     { name: "Payment History", icon: <FaCircleDollarToSlot size={20} />, path: "/dashboard/paymentHistory" },
-    { name: "All Riders", icon: <PiUserListFill size={20} />, path: "/dashboard/allRiders" },
-    { name: "Verified Riders", icon: <FaUserCheck size={20} />, path: "/dashboard/verifiedRiders" },
-    { name: "Pending Riders", icon: <FaUserClock size={20} />, path: "/dashboard/pendingRiders" },
-    { name: "Profile", icon: <MdSwitchAccount size={20} />, path: "/dashboard/profile" },
-    { name: "Make Admin", icon: <IoShieldCheckmarkSharp size={20} />, path: "/dashboard/makeAdmin" },
   ];
+
+
+  // rider can access those route
+  if(!roleLoading && role === "rider"){
+      navItems.splice(5, 0,   // Optional: position where admin links appear
+      { name: "Pending Deliveries", icon: <FaClockRotateLeft size={20} />, path: "/dashboard/pendingDeliveries" },
+      { name: "Completed Deliveries", icon: <IoMdDoneAll size={20} />, path: "/dashboard/completedDeliveries" },
+      { name: "My Earnings", icon: <FaWallet size={20} />, path: "/dashboard/myEarnings" },
+    );
+  }
+
+// admin can acces those route
+  if (!roleLoading && role === "admin") {
+    navItems.splice(5, 0,   // Optional: position where admin links appear
+      { name: "Assign Riders", icon: <LuBike size={20} />, path: "/dashboard/assignRiders" },
+      { name: "All Riders List", icon: <PiUserListFill size={20} />, path: "/dashboard/allRiders" },
+      { name: "Verified Riders", icon: <FaUserCheck size={20} />, path: "/dashboard/verifiedRiders" },
+      { name: "Pending Riders", icon: <FaUserClock size={20} />, path: "/dashboard/pendingRiders" },
+      { name: "Make Admin", icon: <IoShieldCheckmarkSharp size={20} />, path: "/dashboard/makeAdmin" }
+    );
+  }
 
   // Color palette
   const colors = {

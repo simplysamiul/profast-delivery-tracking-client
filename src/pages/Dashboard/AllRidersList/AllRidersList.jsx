@@ -39,7 +39,7 @@ const AllRidersList = () => {
                 return <span className="badge bg-yellow-500 text-white">Pending</span>;
             case "rejected":
             default:
-                return <span className="badge bg-red-500 text-white">Unpaid</span>;
+                return <span className="badge bg-red-500 text-white">Rejected</span>;
         }
     };
 

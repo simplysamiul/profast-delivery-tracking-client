@@ -35,7 +35,7 @@ const PendingRiders = () => {
                 try {
                     const res = await axiousSecure.put(`/riders/${rider._id}`, {
                         status: "verified",
-                        email: user.email
+                        email: rider.email
                     });
 
                     if (res.data.modifiedCount) {

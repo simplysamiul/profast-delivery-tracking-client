@@ -17,10 +17,9 @@ const Footer = () => {
                 <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
                 <div className='my-6  hidden md:block border-1 p-4 rounded-2xl border-lightG'>
                     <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/">Home</NavLink>
-                    <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/services">Services</NavLink>
+                    <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/sendParcel">Send Parcel</NavLink>
                     <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/coverage">Coverage</NavLink>
                     <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/about">About Us</NavLink>
-                    <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/pricing">Pricing</NavLink>
                     <NavLink className="mx-4 btn bg-neutral border-none text-white shadow-none" to="/beARider">Be a Rider</NavLink>
                 </div>
             </aside>

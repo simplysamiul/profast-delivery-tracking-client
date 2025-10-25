@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../layout/RootLayout';
 import Home from '../pages/Home/Home/Home';
@@ -14,11 +13,20 @@ import MyParcels from '../pages/Dashboard/MyParcels/MyParcels';
 import Payment from '../pages/Dashboard/Payment/Payment';
 import PaymentHistory from '../pages/Dashboard/PaymentHistory/PaymentHistory';
 import TrackParcel from '../pages/Dashboard/TrackParcel/TrackParcel';
-import BeARider from '../pages/Dashboard/BeARider/BeARider';
+import BeARider from '../pages/BeARider/BeARider';
 import PendingRiders from '../pages/Dashboard/PendingRiders/PendingRiders';
 import VerifiedRiders from '../pages/Dashboard/VerifiedRiders/VerifiedRiders';
 import AllRidersList from '../pages/Dashboard/AllRidersList/AllRidersList';
 import MakeAdmin from '../pages/Dashboard/MakeAdmin/MakeAdmin';
+import ForbiddenAccess from '../pages/ForbiddenAccess/ForbiddenAccess';
+import AdminRoute from './AdminRoute';
+import AssignRiders from '../pages/Dashboard/AssignRiders/AssignRiders';
+import PendingDeliveries from '../pages/Dashboard/PendingDeliveries/PendingDeliveries';
+import RiderRoute from './RiderRoute';
+import CompletedDeliveries from '../pages/Dashboard/CompletedDeliveries/CompletedDeliveries';
+import MyEarnings from '../pages/Dashboard/MyEarnings/MyEarnings';
+import DashboardHome from '../pages/Dashboard/DashboardHome/DashboardHome';
+import AboutUs from '../pages/AboutUs/AboutUs';
 
 
 const router = createBrowserRouter([
@@ -29,6 +37,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 Component: Home,
+            },
+            {
+                path: "/forbidden",
+                Component: ForbiddenAccess
+            },
+            {
+                path: "/about",
+                Component: AboutUs
             },
             {
                 path: "/coverage",
@@ -59,7 +75,7 @@ const router = createBrowserRouter([
             {
                 path: "/forgetPassword",
                 Component: ForgetPassword
-            },
+            }
 
         ]
     },
@@ -67,6 +83,10 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
+            {
+                index: true,
+                Component: DashboardHome
+            },
             {
                 path: "myParcels",
                 Component: MyParcels
@@ -76,29 +96,56 @@ const router = createBrowserRouter([
                 Component: Payment
             },
             {
-                path: "paymentHistory",
-                Component: PaymentHistory
+                path: "trackParcel/:trackingId",
+                Component: TrackParcel
             },
             {
                 path: "trackParcel",
                 Component: TrackParcel
             },
+
+            // rider routes
+
+            {
+                path: "pendingDeliveries",
+                element: <RiderRoute><PendingDeliveries /></RiderRoute>
+            },
+            {
+                path: "completedDeliveries",
+                element: <RiderRoute><CompletedDeliveries /></RiderRoute>
+            },
+            {
+                path: "myEarnings",
+                element: <RiderRoute><MyEarnings /></RiderRoute>
+            },
+
+            // admin routes
+
+            {
+                path: "paymentHistory",
+                Component: PaymentHistory
+            },
             {
                 path: "pendingRiders",
-                Component: PendingRiders
+                element: <AdminRoute><PendingRiders /></AdminRoute>
             },
             {
                 path: "verifiedRiders",
-                Component: VerifiedRiders
+                element: <AdminRoute><VerifiedRiders /></AdminRoute>
             },
             {
-                path:"allRiders",
-                Component: AllRidersList
+                path: "allRiders",
+                element: <AdminRoute><AllRidersList /></AdminRoute>
             },
             {
-                path:"makeAdmin",
-                Component: MakeAdmin
-            }
+                path: "assignRiders",
+                element: <AdminRoute><AssignRiders /></AdminRoute>
+            },
+            {
+                path: "makeAdmin",
+                element: <AdminRoute><MakeAdmin /></AdminRoute>
+            },
+
         ]
     }
 ]);
