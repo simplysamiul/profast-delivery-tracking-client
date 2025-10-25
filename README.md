@@ -133,8 +133,7 @@ A visual walkthrough of ProFast interface and features.
 |--------------|-----------|-----------------|
 | <img src="https://i.ibb.co.com/Vc1f8kt9/booking.png" width="300"/> | <img src="[https://i.ibb.co.com/xtxdRTvX/screencapture-zap-shift-64d7f-web-app-dashboard-my-Parcels-2025-10-25-20-53-18.png](https://i.ibb.co.com/35tHZpdb/rider-list.png)" width="300"/> | <img src="https://i.ibb.co.com/993VX4kh/rider-apply-form.png" width="300"/> |
 
-| Home Page |
-|--------------|-----------|-----------------|
+||||||||||||||||||||||||| Home Page ||||||||||||||||||||||||||
 | <img src="https://i.ibb.co.com/KjQdsLZc/zap-shift-home.png" width="900"/> |
 
 </div>
