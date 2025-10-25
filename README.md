@@ -115,7 +115,6 @@ Whether you are a freelancer or a business, ProFast makes booking and managing p
 
 ---
 
-```markdown
 ## 🖼️ Project Preview Gallery
 
 A visual walkthrough of ProFast interface and features.
@@ -137,7 +136,7 @@ A visual walkthrough of ProFast interface and features.
 
 This visual flow explains how parcels move inside the platform from pickup to delivery.
 
-```mermaid
+
 flowchart TD
     A[📦 Agent Collects Parcel] --> B{🏙️ Within Same City?}
     B -- ✅ Yes --> C[🚚 Agent Delivers Parcel]
