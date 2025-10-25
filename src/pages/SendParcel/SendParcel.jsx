@@ -474,5 +474,4 @@ const SendParcel = () => {
     </div>
   );
 };
-
 export default SendParcel;
