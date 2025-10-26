@@ -109,7 +109,7 @@ From booking to doorstep delivery, ProFast ensures fast, secure, and reliable lo
 - Node.js
 - Express.js
 - JSON Web Token (JWT)
-- Stripe (if implemented)
+- Stripe
 - CORS middleware
 
 ### 🗄 Database
